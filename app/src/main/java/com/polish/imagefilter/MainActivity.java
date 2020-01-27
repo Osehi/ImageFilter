@@ -14,9 +14,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import jp.wasabeef.glide.transformations.gpu.SepiaFilterTransformation;
+import jp.wasabeef.glide.transformations.gpu.SketchFilterTransformation;
+import jp.wasabeef.glide.transformations.gpu.ToonFilterTransformation;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,12 +42,62 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+
     // a method  to pull up a photo
     public void choosePhoto(View v){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
         startActivityForResult(intent, 1);
     }
+
+    public void applySepia(View v){
+        Glide.with(this).load(image)
+                .apply(RequestOptions.bitmapTransform(new SepiaFilterTransformation()))
+                .into(imageView);
+    }
+
+    public void applyToon(View v){
+        Glide.with(this).load(image)
+                .apply(RequestOptions.bitmapTransform(new ToonFilterTransformation()))
+                .into(imageView);
+    }
+
+    public void applySketch(View v){
+        Glide.with(this).load(image)
+                .apply(RequestOptions.bitmapTransform(new SketchFilterTransformation()))
+                .into(imageView);
+    }
+
+
+
+    /*
+    public void apply(Transformation<Bitmap> filter){
+        Glide
+                .with(this)
+                .load(image)
+                .apply(RequestOptions.bitmapTransform(filter))
+                .into(imageView);
+
+    }
+
+    public void applySepia(View v){
+        apply(new SepiaFilterTransformation());
+    }
+
+    public void applyToon(View v){
+        apply(new ToonFilterTransformation());
+    }
+
+    public void applySketch(View v){
+        apply(new SketchFilterTransformation());
+    }
+    */
+
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
